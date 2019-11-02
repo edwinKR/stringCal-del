@@ -10,7 +10,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "mocha --require @babel/register --require ./test/helpers.js --require ./test/dom.js --require ignore-styles './test/unit/*.spec.js' ",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -27,5 +27,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.6.3",
+    "@babel/register": "^7.6.2",
+    "chai": "^4.2.0",
+    "ignore-styles": "^5.0.1",
+    "jsdom": "^15.2.0",
+    "mocha": "^6.2.2"
   }
 }
