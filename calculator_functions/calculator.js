@@ -12,9 +12,10 @@ export function add(stringInput, maxConstraintOn = false) {
 
 // Helper: Convert string input to an array with only the appropriate numbers.
 function convertToArray(stringInput, maxConstraintOn) {
+  const delimiters = /[,\n]/;  
   const arrayInput = [];
   
-  stringInput.split(',').forEach(element => {
+  stringInput.split(delimiters).forEach(element => {
     const number = parseInt(element, 10);
     if (!isNaN(number)) {
       arrayInput.push(number);

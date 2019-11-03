@@ -46,4 +46,37 @@ describe('Step #2: Comma delimiter without maximum constraint', () => {
     expect(add(sampleOne)).to.equal(78);
     expect(add(sampleTwo)).to.equal(301);
   });
+
+
+});
+
+describe('Step #3: Newline delimiter', () => {
+
+  it('should return sum of given numbers', () => {
+    const sampleOne = '1\n2,3';
+    const sampleTwo = '-1\n100';
+
+    expect(add(sampleOne)).to.equal(6);
+    expect(add(sampleTwo)).to.equal(99);
+  });
+
+  it('should return zero if nothing but only new line and/or comma delimiters provided', () => {
+    const sampleOne = ',';
+    const sampleTwo = '\n';
+    const sampleThree = '\n,\n,\n';
+
+    expect(add(sampleOne)).to.equal(0);
+    expect(add(sampleTwo)).to.equal(0);
+    expect(add(sampleThree)).to.equal(0);
+  });
+
+  it('should return sum of purely numbers', () => {
+    const sampleOne = ',\n';
+    const sampleTwo = '\n11';
+    const sampleThree = 'alkdsjf\n,34\n,-1\n';
+
+    expect(add(sampleOne)).to.equal(0);
+    expect(add(sampleTwo)).to.equal(11);
+    expect(add(sampleThree)).to.equal(33);
+  });
 });
