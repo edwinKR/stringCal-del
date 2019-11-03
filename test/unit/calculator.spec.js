@@ -1,6 +1,6 @@
 import { add } from '../../calculator_functions/calculator';
 
-describe('Step #1: Comma delimiter for a maximum of 2 numbers', () => {
+xdescribe('Step #1: Comma delimiter for a maximum of 2 numbers', () => {
   const maxConstraintOn = true;
   
   it('should return sum of given two numbers between a comma', () => {
@@ -37,7 +37,7 @@ describe('Step #1: Comma delimiter for a maximum of 2 numbers', () => {
   });
 });
 
-describe('Step #2: Comma delimiter without maximum constraint', () => {
+xdescribe('Step #2: Comma delimiter without maximum constraint', () => {
 
   it('should return sum of given numbers', () => {
     const sampleOne = '1,2,3,4,5,6,7,8,9,10,11,12';
@@ -50,7 +50,7 @@ describe('Step #2: Comma delimiter without maximum constraint', () => {
 
 });
 
-describe('Step #3: Newline delimiter', () => {
+xdescribe('Step #3: Newline delimiter', () => {
 
   it('should return sum of given numbers', () => {
     const sampleOne = '1\n2,3';
@@ -81,7 +81,7 @@ describe('Step #3: Newline delimiter', () => {
   });
 });
 
-describe.only('Step #4: Deny any negative numbers', () => {
+describe('Step #4: Deny any negative numbers', () => {
 
   it('should throw an exception error with all negative numbers provided', () => {
     const sampleOne = '1\n-2,-3';
@@ -110,5 +110,17 @@ describe.only('Step #4: Deny any negative numbers', () => {
     expect(add(sampleTwo)).to.equal(100);
     expect(() => add(sampleThree)).to.not.throw(errorOutputThree);
     expect(add(sampleThree)).to.equal(1);
+  });
+});
+
+describe('Step #5: Number must not be greater than 1000', () => {
+
+  it('should return sum excluding numbers greater than 1000', () => {
+    const sampleOne = '2,1001,6';
+    const sampleTwo = ',aldfja\n2019';
+    const sampleThree = '1000\n1000,1000';
+    expect(add(sampleOne)).to.equal(8);
+    expect(add(sampleTwo)).to.equal(0);
+    expect(add(sampleThree)).to.equal(3000);
   });
 });
