@@ -80,3 +80,35 @@ describe('Step #3: Newline delimiter', () => {
     expect(add(sampleThree)).to.equal(33);
   });
 });
+
+describe.only('Step #4: Deny any negative numbers', () => {
+
+  it('should throw an exception error with all negative numbers provided', () => {
+    const sampleOne = '1\n-2,-3';
+    const errorOutputOne = "Found negative nums: [-2,-3]";
+
+    const sampleTwo = '-1,aldfja\n100';
+    const errorOutputTwo = "Found negative nums: [-1]";
+    
+    expect(() => add(sampleOne)).to.throw(errorOutputOne);
+    expect(() => add(sampleTwo)).to.throw(errorOutputTwo);
+  });
+
+  it('should not throw an exception error with just the negative sign', () => {
+    const sampleOne = '-';
+    const errorOutputOne = "Found negative nums: [-]";
+
+    const sampleTwo = '-,aldfja\n100';
+    const errorOutputTwo = "Found negative nums: [-]";
+    
+    const sampleThree = '-,1\n-,';
+    const errorOutputThree = "Found negative nums: [-]";
+
+    expect(() => add(sampleOne)).to.not.throw(errorOutputOne);
+    expect(add(sampleOne)).to.equal(0);
+    expect(() => add(sampleTwo)).to.not.throw(errorOutputTwo);
+    expect(add(sampleTwo)).to.equal(100);
+    expect(() => add(sampleThree)).to.not.throw(errorOutputThree);
+    expect(add(sampleThree)).to.equal(1);
+  });
+});

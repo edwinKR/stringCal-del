@@ -1,5 +1,5 @@
-// 'Add' operator that returns final output
-// By default, the add operator will not have any constraints for the numbers.
+// 'Add' operator that returns the final output.
+//    By default, the add operator will not have any constraints for the numbers.
 export function add(stringInput, maxConstraintOn = false) {
   const arrayInput = convertToArray(stringInput, maxConstraintOn);
 
@@ -17,22 +17,35 @@ function convertToArray(stringInput, maxConstraintOn) {
   
   stringInput.split(delimiters).forEach(element => {
     const number = parseInt(element, 10);
+
     if (!isNaN(number)) {
       arrayInput.push(number);
     } 
   });
   
   if(maxConstraintOn) {
-    return validateArray(arrayInput);
+    return validateArray(arrayInput); 
   }
 
-  return arrayInput;
+  return checkNegatives(arrayInput); 
 } 
 
-// Helper: Validator that throws error if more than two numbers.
+// Helper: Throw error if more than 2 numbers in input. Otherwise, return proper array. 
 function validateArray(arrayInput) {
   if(arrayInput.length > 2) {
     throw new Error('Too many numbers. Should be 2 numbers only!');
   }
   return arrayInput; 
+}
+
+// Helper: Throw error if negative number(s) included in input. Otherwise, return proper array.
+function checkNegatives(arrayInput) {
+  const negativeNums = arrayInput.filter(number => number < 0);
+  
+  if(negativeNums.length > 0) {
+    const errorOutput = `Found negative nums: [${negativeNums}]`
+    throw new Error(errorOutput);
+  }
+
+  return arrayInput;
 }
