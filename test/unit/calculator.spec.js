@@ -143,3 +143,20 @@ describe.only('Step #6: Customer delimiter of a single character', () => {
     expect(add(sampleTwo)).to.equal(12);
   });
 });
+
+describe.only('Step #7: Customer delimiter of any character length', () => {
+
+  it('should return sum using the custom delimiter: //{delimiter}\\n{numbers}', () => {
+    const sampleOne = '//[***]\n11***22***33';
+
+    expect(add(sampleOne)).to.equal(66);
+  });
+
+  it('should return sum supporting previous delimiters if not a custom delimiter', () => {
+    const sampleOne = '#\n2,5';
+    const sampleTwo = ',\n2,ff,10';
+    
+    expect(add(sampleOne)).to.equal(7);
+    expect(add(sampleTwo)).to.equal(12);
+  });
+});

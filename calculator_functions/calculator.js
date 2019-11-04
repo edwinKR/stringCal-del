@@ -40,17 +40,25 @@ function getSetOfDelimitersAndNumbersToSum(stringInput) {
   // Obtaining the delimiter to be used whether it is the given default(,/n) or customed version.
   if(isCustomDelimiter(givenCustomRegex, stringInput)) {
     const parsedSet = stringInput.split(givenCustomRegex);
-    delimiters = new RegExp("[" + parsedSet[1] + "]");
+    let regexInput; 
+    isSingleCustom(parsedSet) ? regexInput = "[" + parsedSet[1] + "]" : regexInput = parsedSet[1];
+    
+    delimiters = new RegExp(regexInput);
     stringInput = parsedSet[2];
   } else {
     delimiters = /[,\n]/;
   }
+
   return [delimiters, stringInput];
 }
 
 // Helper: Check if given stringInput is a custom delimiter.
 function isCustomDelimiter(regex, stringInput) {
   return stringInput.indexOf("//") === 0 && regex.test(stringInput)
+}
+
+function isSingleCustom(parsedSet) {
+  return parsedSet[1].indexOf(0) === "[" && parsedSet[1].indexOf(parsedSet[1].length - 1) === "]"
 }
 
 // Helper: Throw error if more than 2 numbers in input. Otherwise, return proper array. 
