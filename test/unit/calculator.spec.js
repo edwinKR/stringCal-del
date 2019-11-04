@@ -124,3 +124,22 @@ describe('Step #5: Number must not be greater than 1000', () => {
     expect(add(sampleThree)).to.equal(3000);
   });
 });
+
+describe.only('Step #6: Customer delimiter of a single character', () => {
+
+  it('should return sum using the custom delimiter: //{delimiter}\\n{numbers}', () => {
+    const sampleOne = '//#\n2#5';
+    const sampleTwo = '//,\n2,ff,100';
+
+    expect(add(sampleOne)).to.equal(7);
+    expect(add(sampleTwo)).to.equal(102);
+  });
+
+  it('should return sum supporting previous delimiters if not a custom delimiter', () => {
+    const sampleOne = '#\n2,5';
+    const sampleTwo = ',\n2,ff,10';
+    
+    expect(add(sampleOne)).to.equal(7);
+    expect(add(sampleTwo)).to.equal(12);
+  });
+});
