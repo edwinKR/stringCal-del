@@ -14,7 +14,7 @@ function convertToArray(stringInput, maxConstraintOn) {
   const delimiterAndNumbers = getSetOfDelimitersAndNumbersToSum(stringInput);
   const delimiters = delimiterAndNumbers[0];
   stringInput = delimiterAndNumbers[1];  
-
+  
   const arrayInput = [];
   stringInput.split(delimiters).forEach(element => {
     const number = parseInt(element, 10);
@@ -40,11 +40,17 @@ function getSetOfDelimitersAndNumbersToSum(stringInput) {
   // Obtaining the delimiter to be used whether it is the given default(,/n) or customed version.
   if(isCustomDelimiter(givenCustomRegex, stringInput)) {
     const parsedSet = stringInput.split(givenCustomRegex);
+
     let regexInput; 
-    isSingleCustom(parsedSet) ? regexInput = "[" + parsedSet[1] + "]" : regexInput = parsedSet[1];
-    
+    if(isSingleCharacter(parsedSet)) {
+      regexInput = "[" + parsedSet[1] + "]"; 
+    } else {
+      // Obtaining the right regex format for customed delimiters.
+      regexInput = getRegexForCustomDelimiters(parsedSet[1]);
+    }
     delimiters = new RegExp(regexInput);
     stringInput = parsedSet[2];
+
   } else {
     delimiters = /[,\n]/;
   }
@@ -52,13 +58,20 @@ function getSetOfDelimitersAndNumbersToSum(stringInput) {
   return [delimiters, stringInput];
 }
 
+
 // Helper: Check if given stringInput is a custom delimiter.
 function isCustomDelimiter(regex, stringInput) {
   return stringInput.indexOf("//") === 0 && regex.test(stringInput)
 }
 
-function isSingleCustom(parsedSet) {
+// Helper: Check if custom delimiter is a single character.
+function isSingleCharacter(parsedSet) {
   return parsedSet[1].indexOf(0) === "[" && parsedSet[1].indexOf(parsedSet[1].length - 1) === "]"
+}
+
+// Helper: Get proper format for the customed delimiters given.
+function getRegexForCustomDelimiters(delimitersToParse) {
+  return delimitersToParse.replace(/\]\[/g, "]|[");
 }
 
 // Helper: Throw error if more than 2 numbers in input. Otherwise, return proper array. 

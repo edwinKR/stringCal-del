@@ -1,13 +1,13 @@
 import { add } from '../../calculator_functions/calculator';
 
-xdescribe('Step #1: Comma delimiter for a maximum of 2 numbers', () => {
+describe('Step #1: Comma delimiter for a maximum of 2 numbers', () => {
   const maxConstraintOn = true;
   
   it('should return sum of given two numbers between a comma', () => {
-    const sampleOne = '1,5000';
+    const sampleOne = '1,500';
     const sampleTwo = '4,-3';
 
-    expect(add(sampleOne, maxConstraintOn)).to.equal(5001);
+    expect(add(sampleOne, maxConstraintOn)).to.equal(501);
     expect(add(sampleTwo, maxConstraintOn)).to.equal(1);
   });
 
@@ -37,7 +37,7 @@ xdescribe('Step #1: Comma delimiter for a maximum of 2 numbers', () => {
   });
 });
 
-xdescribe('Step #2: Comma delimiter without maximum constraint', () => {
+describe('Step #2: Comma delimiter without maximum constraint', () => {
 
   it('should return sum of given numbers', () => {
     const sampleOne = '1,2,3,4,5,6,7,8,9,10,11,12';
@@ -50,14 +50,14 @@ xdescribe('Step #2: Comma delimiter without maximum constraint', () => {
 
 });
 
-xdescribe('Step #3: Newline delimiter', () => {
+describe('Step #3: Newline delimiter', () => {
 
   it('should return sum of given numbers', () => {
     const sampleOne = '1\n2,3';
-    const sampleTwo = '-1\n100';
+    const sampleTwo = '\n100';
 
     expect(add(sampleOne)).to.equal(6);
-    expect(add(sampleTwo)).to.equal(99);
+    expect(add(sampleTwo)).to.equal(100);
   });
 
   it('should return zero if nothing but only new line and/or comma delimiters provided', () => {
@@ -73,11 +73,11 @@ xdescribe('Step #3: Newline delimiter', () => {
   it('should return sum of purely numbers', () => {
     const sampleOne = ',\n';
     const sampleTwo = '\n11';
-    const sampleThree = 'alkdsjf\n,34\n,-1\n';
+    const sampleThree = 'alkdsjf\n,34\n,1\n';
 
     expect(add(sampleOne)).to.equal(0);
     expect(add(sampleTwo)).to.equal(11);
-    expect(add(sampleThree)).to.equal(33);
+    expect(add(sampleThree)).to.equal(35);
   });
 });
 
@@ -125,7 +125,7 @@ describe('Step #5: Number must not be greater than 1000', () => {
   });
 });
 
-describe.only('Step #6: Customer delimiter of a single character', () => {
+describe('Step #6: Customer delimiter of a single character', () => {
 
   it('should return sum using the custom delimiter: //{delimiter}\\n{numbers}', () => {
     const sampleOne = '//#\n2#5';
@@ -144,12 +144,29 @@ describe.only('Step #6: Customer delimiter of a single character', () => {
   });
 });
 
-describe.only('Step #7: Customer delimiter of any character length', () => {
+describe('Step #7: Customer delimiter of any character length', () => {
 
   it('should return sum using the custom delimiter: //{delimiter}\\n{numbers}', () => {
     const sampleOne = '//[***]\n11***22***33';
 
     expect(add(sampleOne)).to.equal(66);
+  });
+
+  it('should return sum supporting previous delimiters if not a custom delimiter', () => {
+    const sampleOne = '#\n2,5';
+    const sampleTwo = ',\n2,ff,10';
+    
+    expect(add(sampleOne)).to.equal(7);
+    expect(add(sampleTwo)).to.equal(12);
+  });
+});
+
+describe('Step #8: Multiple customer delimiter of any length', () => {
+
+  it('should return sum using the custom delimiter: //[{delimiter1}][{delimiter2}]...\\n{numbers}', () => {
+    const sampleOne = '//[*][!!][r9r]\n11r9r22*hh*33!!44';
+
+    expect(add(sampleOne)).to.equal(110);
   });
 
   it('should return sum supporting previous delimiters if not a custom delimiter', () => {
