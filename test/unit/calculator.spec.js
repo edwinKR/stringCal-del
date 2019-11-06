@@ -2,30 +2,32 @@ import { add } from '../../calculator_functions/calculator';
 import { displayFormula } from '../../calculator_functions/bonus';
 
 describe('Step #1: Comma delimiter for a maximum of 2 numbers', () => {
-  const maxConstraintOn = true;
+  const switchConfigSample = {
+    maxConstraintOn: true
+  };
   
   it('should return sum of given two numbers between a comma', () => {
     const sampleOne = '1,500';
     const sampleTwo = '4,-3';
 
-    expect(add(sampleOne, maxConstraintOn)).to.equal(501);
-    expect(add(sampleTwo, maxConstraintOn)).to.equal(1);
+    expect(add(sampleOne, switchConfigSample)).to.equal(501);
+    expect(add(sampleTwo, switchConfigSample)).to.equal(1);
   });
 
   it('should convert empty or missing inputs to zero', () => {
     const sampleOne = '';
     const sampleTwo = '20';
 
-    expect(add(sampleOne, maxConstraintOn)).to.equal(0);
-    expect(add(sampleTwo, maxConstraintOn)).to.equal(20);
+    expect(add(sampleOne, switchConfigSample)).to.equal(0);
+    expect(add(sampleTwo, switchConfigSample)).to.equal(20);
   });
 
   it('should convert invalid inputs to zero', () => {
     const sampleOne = 'akldjf';
     const sampleTwo = '5,tytytt';
 
-    expect(add(sampleOne, maxConstraintOn)).to.equal(0);
-    expect(add(sampleTwo, maxConstraintOn)).to.equal(5);
+    expect(add(sampleOne, switchConfigSample)).to.equal(0);
+    expect(add(sampleTwo, switchConfigSample)).to.equal(5);
   });
 
   it('should throw an exception error if more than 2 numbers are given', () => {
@@ -33,8 +35,8 @@ describe('Step #1: Comma delimiter for a maximum of 2 numbers', () => {
     const sampleOne = '1,2,3,4,5,6,7,8,9,10,11,12';
     const sampleTwo = '1,adklfj,100';
 
-    expect(() => add(sampleOne, maxConstraintOn)).to.throw(errorMessage);
-    expect(add(sampleTwo, maxConstraintOn)).to.equal(101);
+    expect(() => add(sampleOne, switchConfigSample)).to.throw(errorMessage);
+    expect(add(sampleTwo, switchConfigSample)).to.equal(101);
   });
 });
 
@@ -187,6 +189,60 @@ describe('Stretch Goals #1: Display formula', () => {
     
     expect(displayFormula(sampleOne)).to.equal('11+22+0+0+33+44=110');
     expect(displayFormula(sampleTwo)).to.equal('2+0+4+0+0+6=12');
+  });
+});
+
+describe('Stretch Goals #2: Allow the acceptance of arguments that defines alternate delimiter, toggle negative num availability, and upper bound', () => {
+
+  it('should allow alternate delimiter if not passed as argument or switched on', () => {       
+    const sampleOne = '1\n2,3';
+    const sampleTwo = '2,,\n4,rrrr,1001,6';
+
+    expect(add(sampleOne)).to.equal(6);
+    expect(displayFormula(sampleOne)).to.equal('1+2+3=6');
+    expect(add(sampleTwo)).to.equal(12);
+    expect(displayFormula(sampleTwo)).to.equal('2+0+0+4+0+0+6=12');
+  });
+
+  it('should not allow alternate delimiter and line break if accepted as argument or switched off ', () => {   
+    const switchConfigSample = {
+      alternateDelimiterOn: false  
+    };
+
+    const sampleOne = '\n3';
+    const sampleTwo = '2,,\n3';
+
+    expect(add(sampleOne, switchConfigSample)).to.equal(3);
+    expect(displayFormula(sampleOne, switchConfigSample)).to.equal('\n3=3');
+    expect(add(sampleTwo, switchConfigSample)).to.equal(5);
+    expect(displayFormula(sampleTwo, switchConfigSample)).to.equal('2+0+\n3=5');
+  });
+
+  it('should allow negative numbers if accepted as argument', () => {   
+    const switchConfigSample = {
+      negativeDenialOn: false
+    };
+    
+    const sampleOne = '1\n-2,-3';
+
+    expect(add(sampleOne, switchConfigSample)).to.equal(-4);
+    expect(displayFormula(sampleOne, switchConfigSample)).to.equal('1+(-2)+(-3)=-4');
+  });
+
+  it('should not have any upper bound constraints if accepted as argument', () => {   
+    const switchConfigSample = {
+      upperBoundOn: false  
+    };
+    
+    const sampleOne = '2,1001';
+    const sampleTwo = '1001\n1000,2000';
+
+    expect(add(sampleOne, switchConfigSample)).to.equal(1003);
+    expect(displayFormula(sampleOne, switchConfigSample)).to.equal('2+1001=1003');
+    expect(add(sampleOne)).to.equal(2);
+    expect(displayFormula(sampleOne)).to.equal('2+0=2');
+    expect(add(sampleTwo, switchConfigSample)).to.equal(4001);
+    expect(displayFormula(sampleTwo, switchConfigSample)).to.equal('1001+1000+2000=4001');
   });
 });
 

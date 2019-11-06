@@ -1,28 +1,35 @@
 // Comment: Helper methods below here maybe redundant. I wanted to play around with regex a bit more which is why I created another file here. 
 import { add, isCustomDelimiter } from './calculator';
+import { getStateOfSwitchConfig } from './switch_config_state';
 
-export function displayFormula(stringInput) {
-  let setOfDelimitersAndNumsToCalculate = getSetOfDelimitersAndNumsToCalculate(stringInput);
+export function displayFormula(stringInput, switchConfig) {
+  //Need to start with initial state of our switch configs.
+  switchConfig = getStateOfSwitchConfig(switchConfig);
+
+  let setOfDelimitersAndNumsToCalculate = getSetOfDelimitersAndNumsToCalculate(stringInput, switchConfig);
   let [regexFormattedDelimiters , numsToCalculate ] = setOfDelimitersAndNumsToCalculate;
-
+  
   let outputToDisplay = numsToCalculate
     .map(num => {
       if(regexFormattedDelimiters.test(num)) {
-        num = '-';
-      } else if(isNaN(parseInt(num, 10)) || num > 1000) {
+        num = '~';
+      } else if(switchConfig.upperBoundOn && parseInt(num, 10) > 1000) {
         num = '0';
-      } 
-      return num;
+      } else if(isNaN(parseInt(num, 10))) {
+        num = '0';
+      }
+
+      return isNegatvie(num) ? `(${num})` : num;
     })
-    .filter(num => num !== '-')
+    .filter(num => num !== '~')
     .join('+');
 
-  return `${outputToDisplay}=${add(stringInput)}`;
+  return `${outputToDisplay}=${add(stringInput, switchConfig)}`;
 }
 
 // Helper: Depending on type of delimiter, provide set of custom delimiter & the parsed numbers to sum up.
 // Output format is [delimiters, numbers to calculate] | Example: ['#', '2#5'] 
-function getSetOfDelimitersAndNumsToCalculate(stringInput) {
+function getSetOfDelimitersAndNumsToCalculate(stringInput, switchConfig) {
   let numsToCalculate;
   let regexFormattedDelimiters;
 
@@ -36,6 +43,9 @@ function getSetOfDelimitersAndNumsToCalculate(stringInput) {
       .slice(1)
       .split(regexFormattedDelimiters)
       .filter(num => num !== undefined);
+  } else if(!switchConfig.alternateDelimiterOn) {
+    regexFormattedDelimiters = /[,]/;
+    numsToCalculate = stringInput.split(regexFormattedDelimiters);
   } else {
     regexFormattedDelimiters = /[,\n]/;
     numsToCalculate = stringInput.split(regexFormattedDelimiters);
@@ -59,4 +69,9 @@ function formatCustomDelimitersForRegexReady(delimitersAndNumbers) {
     });
 
   return delimiters.join("|");
+}
+
+// Helper: Simple boolean check to see if number is negative.
+function isNegatvie(num) {
+  return parseInt(num, 10) < 0;
 }

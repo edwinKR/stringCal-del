@@ -1,7 +1,12 @@
+import { getStateOfSwitchConfig } from './switch_config_state';
+
 // 'Add' operator that returns the final output.
-//  By default, the add operator will not have any constraints for the numbers.
-export function add(stringInput, maxConstraintOn = false) {
-  const arrayInput = convertToArray(stringInput, maxConstraintOn);
+//  For default conditions(i.e. upper bounds, alternate delimiter, etc.), check the 'switch_config_state.js'
+export function add(stringInput, switchConfig) {
+  //Need to start with initial state of our switch configs.
+  switchConfig = getStateOfSwitchConfig(switchConfig);
+  
+  const arrayInput = convertToArray(stringInput, switchConfig);
   const sum = arrayInput.reduce((acc, curr) => {
     return acc + curr;
   }, 0);
@@ -10,32 +15,36 @@ export function add(stringInput, maxConstraintOn = false) {
 }
 
 // Helper: Convert string input to an array with only the appropriate numbers.
-function convertToArray(stringInput, maxConstraintOn) {
-  const delimiterAndNumbers = getSetOfDelimitersAndNumbersToSum(stringInput);
+function convertToArray(stringInput, switchConfig) {
+  const delimiterAndNumbers = getSetOfDelimitersAndNumbersToCalculate(stringInput, switchConfig);
   const delimiters = delimiterAndNumbers[0];
   stringInput = delimiterAndNumbers[1];  
   
   const arrayInput = [];
   stringInput.split(delimiters).forEach(element => {
-    const number = parseInt(element, 10);
+    let number = parseInt(element, 10);
 
-    if(!isNaN(number) && number <= 1000) {
+    if (switchConfig.upperBoundOn && number > 1000) {
+      number = 0;
+    }
+
+    if(!isNaN(number)) {
       arrayInput.push(number);
     } 
   });
-  
-  if(maxConstraintOn) {
+
+  if(switchConfig.maxConstraintOn) {
     return validateArray(arrayInput); 
   }
 
-  return checkNegatives(arrayInput); 
+  return switchConfig.negativeDenialOn ? checkNegatives(arrayInput) : arrayInput; 
 } 
 
 // Helper: Provide set of custom delimiter & the parsed numbers to sum up.
 // Output format is [delimiter, numbers to add] | Example: ['#', '2#5'] 
-function getSetOfDelimitersAndNumbersToSum(stringInput) {
+function getSetOfDelimitersAndNumbersToCalculate(stringInput, switchConfig) {
   const givenCustomRegex  = /\/\/(.*)\n/;
-  let delimiters;
+  let delimiters = /[,\n]/;
 
   // Obtaining the delimiter to be used whether it is the given default(,/n) or customed version.
   if(isCustomDelimiter(givenCustomRegex, stringInput)) {
@@ -51,8 +60,8 @@ function getSetOfDelimitersAndNumbersToSum(stringInput) {
     delimiters = new RegExp(regexInput);
     stringInput = parsedSet[2];
 
-  } else {
-    delimiters = /[,\n]/;
+  } else if(!switchConfig.alternateDelimiterOn) {
+    delimiters = /[,]/;
   }
 
   return [delimiters, stringInput];
