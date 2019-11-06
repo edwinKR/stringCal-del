@@ -60,7 +60,7 @@ function getSetOfDelimitersAndNumbersToSum(stringInput) {
 
 
 // Helper: Check if given stringInput is a custom delimiter.
-function isCustomDelimiter(regex, stringInput) {
+export function isCustomDelimiter(regex, stringInput) {
   return stringInput.indexOf("//") === 0 && regex.test(stringInput)
 }
 
@@ -71,13 +71,13 @@ function isSingleCharacter(parsedSet) {
 
 // Helper: Get proper format for the customed delimiters given.
 function getRegexForCustomDelimiters(delimitersToParse) {
-  return delimitersToParse.replace(/\]\[/g, "]|[");
+  return delimitersToParse = delimitersToParse.replace(/\]\[/g, "]|[");
 }
 
 // Helper: Throw error if more than 2 numbers in input. Otherwise, return proper array. 
 function validateArray(arrayInput) {
   if(arrayInput.length > 2) {
-    throw new Error('Too many numbers. Should be 2 numbers only!');
+    throw new Error("Too many numbers. Should be 2 numbers only!");
   }
 
   return arrayInput; 
@@ -94,3 +94,4 @@ function checkNegatives(arrayInput) {
 
   return arrayInput;
 }
+

@@ -1,4 +1,5 @@
 import { add } from '../../calculator_functions/calculator';
+import { displayFormula } from '../../calculator_functions/bonus';
 
 describe('Step #1: Comma delimiter for a maximum of 2 numbers', () => {
   const maxConstraintOn = true;
@@ -177,3 +178,15 @@ describe('Step #8: Multiple customer delimiter of any length', () => {
     expect(add(sampleTwo)).to.equal(12);
   });
 });
+
+describe('Stretch Goals #1: Display formula', () => {
+
+  it('should return formula used for calculation', () => {
+    const sampleOne = '//[*][!!][r9r]\n11r9r22**hh*33!!44';
+    const sampleTwo = '2,,4,rrrr,1001,6';
+    
+    expect(displayFormula(sampleOne)).to.equal('11+22+0+0+33+44=110');
+    expect(displayFormula(sampleTwo)).to.equal('2+0+4+0+0+6=12');
+  });
+});
+
