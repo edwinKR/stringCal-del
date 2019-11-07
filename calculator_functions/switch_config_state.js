@@ -4,6 +4,7 @@ const switchConfigDefaultState = {
   negativeDenialOn: true,
   upperBoundOn: true,
   maxConstraintOn: false,
+  operator: '+'
 };
 
 export function getStateOfSwitchConfig(switchInput = switchConfigDefaultState) {

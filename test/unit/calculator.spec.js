@@ -1,4 +1,4 @@
-import { add } from '../../calculator_functions/calculator';
+import { add, subtract, multiply, divide } from '../../calculator_functions/calculator';
 import { displayFormula } from '../../calculator_functions/bonus';
 
 describe('Step #1: Comma delimiter for a maximum of 2 numbers', () => {
@@ -128,7 +128,7 @@ describe('Step #5: Number must not be greater than 1000', () => {
   });
 });
 
-describe('Step #6: Customer delimiter of a single character', () => {
+describe('Step #6: Custom delimiter of a single character', () => {
 
   it('should return sum using the custom delimiter: //{delimiter}\\n{numbers}', () => {
     const sampleOne = '//#\n2#5';
@@ -147,7 +147,7 @@ describe('Step #6: Customer delimiter of a single character', () => {
   });
 });
 
-describe('Step #7: Customer delimiter of any character length', () => {
+describe('Step #7: Custom delimiter of any character length', () => {
 
   it('should return sum using the custom delimiter: //{delimiter}\\n{numbers}', () => {
     const sampleOne = '//[***]\n11***22***33';
@@ -164,7 +164,7 @@ describe('Step #7: Customer delimiter of any character length', () => {
   });
 });
 
-describe('Step #8: Multiple customer delimiter of any length', () => {
+describe('Step #8: Multiple custom delimiter of any length', () => {
 
   it('should return sum using the custom delimiter: //[{delimiter1}][{delimiter2}]...\\n{numbers}', () => {
     const sampleOne = '//[*][!!][r9r]\n11r9r22*hh*33!!44';
@@ -246,3 +246,54 @@ describe('Stretch Goals #2: Allow the acceptance of arguments that defines alter
   });
 });
 
+describe('Stretch Goals #3: Support subtraction, multiplication, and division operations', () => {
+  const sampleOne = '//#\n5#2';
+  const sampleTwo = ',\n10,ff,2';
+  const sampleThree = '//[***]\n33***3***11';
+  const sampleFour = '//[*][!!][r9r]\n100r9r20*hh*5!!0';
+  
+  it('should return value using the subtraction operation', () => {
+    const switchConfigSample = {
+      operator: '-'  
+    };
+    
+    expect(subtract(sampleOne)).to.equal(3);
+    expect(displayFormula(sampleOne, switchConfigSample)).to.equal('5-2=3');
+    expect(subtract(sampleTwo)).to.equal(-12);
+    expect(displayFormula(sampleTwo, switchConfigSample)).to.equal('0-0-10-0-2=-12');
+    expect(subtract(sampleThree)).to.equal(19);
+    expect(displayFormula(sampleThree, switchConfigSample)).to.equal('33-3-11=19');
+    expect(subtract(sampleFour)).to.equal(75);
+    expect(displayFormula(sampleFour, switchConfigSample)).to.equal('100-20-0-5-0=75');
+  });
+
+  it('should return value using the multiplication operation', () => {
+    const switchConfigSample = {
+      operator: '*'  
+    };
+
+    expect(multiply(sampleOne)).to.equal(10);
+    expect(displayFormula(sampleOne, switchConfigSample)).to.equal('5*2=10');
+    expect(multiply(sampleTwo)).to.equal(0);
+    expect(displayFormula(sampleTwo, switchConfigSample)).to.equal('0*0*10*0*2=0');
+    expect(multiply(sampleThree)).to.equal(1089);
+    expect(displayFormula(sampleThree, switchConfigSample)).to.equal('33*3*11=1089');
+    expect(multiply(sampleFour)).to.equal(0);
+    expect(displayFormula(sampleFour, switchConfigSample)).to.equal('100*20*0*5*0=0');
+  });
+
+  it('should return value using the multiplication operation', () => {
+    const switchConfigSample = {
+      operator: '/'  
+    };
+
+    expect(divide(sampleOne)).to.equal(2.5);
+    expect(displayFormula(sampleOne, switchConfigSample)).to.equal('5/2=2.5');
+    expect(divide(sampleTwo)).to.be.NaN;
+    expect(displayFormula(sampleTwo, switchConfigSample)).to.equal('0/0/10/0/2=NaN');
+    expect(divide(sampleThree)).to.equal(1);
+    expect(displayFormula(sampleThree, switchConfigSample)).to.equal('33/3/11=1');
+    expect(divide(sampleFour)).to.equal(Infinity);
+    expect(displayFormula(sampleFour, switchConfigSample)).to.equal('100/20/0/5/0=Infinity');
+  });
+});
