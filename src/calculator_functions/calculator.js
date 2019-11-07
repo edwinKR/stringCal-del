@@ -1,5 +1,4 @@
 import { getStateOfSwitchConfig } from './switch_config_state';
-import { delimiter } from 'path';
 
 //  For default conditions(i.e. upper bounds, alternate delimiter, etc.), check the 'switch_config_state.js'
 

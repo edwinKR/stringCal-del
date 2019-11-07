@@ -1,5 +1,5 @@
-import { add, subtract, multiply, divide } from '../../calculator_functions/calculator';
-import { displayFormula } from '../../calculator_functions/bonus';
+import { add, subtract, multiply, divide } from '../../src/calculator_functions/calculator';
+import { displayFormula } from '../../src/calculator_functions/bonus';
 
 describe('Step #1: Comma delimiter for a maximum of 2 numbers', () => {
   const switchConfigSample = {

@@ -4,6 +4,12 @@ import { getStateOfSwitchConfig } from './switch_config_state';
 
 export function displayFormula(stringInput, switchConfig) {
   //Need to start with initial state of our switch configs.
+
+  if (stringInput.includes("\\n")) {
+    // React input text field doens't recognize the "\n" as expected. 
+    stringInput = stringInput.replace(/\\n/g, "\n")
+  }
+
   switchConfig = getStateOfSwitchConfig(switchConfig);
 
   const setOfDelimitersAndNumsToCalculate = getSetOfDelimitersAndNumsToCalculate(stringInput, switchConfig);
