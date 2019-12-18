@@ -3,7 +3,6 @@ import OperatorPad from './OperatorPad';
 import { 
   Grid,
   Container,
-  Checkbox
  } from 'semantic-ui-react'
 
 class ConstraintsPad extends Component {
@@ -21,7 +20,6 @@ class ConstraintsPad extends Component {
   }
 
   handleChange = async (event) => {
-    console.log('event>>>>', event.target)
     await this.setState({
       switchConfigState: { 
         ...this.state.switchConfigState, 

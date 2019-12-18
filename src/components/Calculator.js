@@ -20,9 +20,6 @@ class Calculator extends Component {
   }
 
   handleChange = async (event) => {
-    if(event.target.value.includes('\n')) {
-      
-    }
     await this.setState({
       stringInput: event.target.value
     })
