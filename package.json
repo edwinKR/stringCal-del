@@ -35,7 +35,7 @@
     "@babel/register": "^7.6.2",
     "chai": "^4.2.0",
     "ignore-styles": "^5.0.1",
-    "jsdom": "^15.2.0",
+    "jsdom": "^16.5.0",
     "mocha": "^6.2.2"
   }
 }
